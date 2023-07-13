@@ -115,7 +115,7 @@ public class Service {
         studentCourseRepository.save(studentCourse);
     }
 
-    public Float viewAverage(Long courseId, Long teacherId) {
+    public double viewAverage(Long courseId, Long teacherId) {
         Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() ->
                 new IllegalStateException("teacher id " + teacherId + " does not exist"));
         Course course = courseRepository.findById(courseId).orElseThrow(() ->
@@ -129,7 +129,7 @@ public class Service {
             avg += studentCourse.getGrade();
         }
         avg /= courses.size();
-        return avg;
+        return courses.stream().mapToDouble(StudentCourse::getGrade).average().getAsDouble();
     }
 
     public List<String> viewGpa(Float grade) {

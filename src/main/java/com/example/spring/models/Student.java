@@ -4,45 +4,30 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @ToString
+@RequiredArgsConstructor
 @Table(name = "student")
 @NoArgsConstructor
+@EqualsAndHashCode(of = {"id"})
 public class Student {
 
     @Id
+    @NonNull
     private Long id;
+    @NonNull
     private String name;
     @ManyToOne
     @JoinColumn(name = "favourite")
+    @NonNull
     private Course favourite;
+    @NonNull
     private Float grade;
 
     @OneToMany(mappedBy = "student")
     Set<StudentCourse> courses = new HashSet<>();
-
-    public Student(Long id, String name, Course favourite, Float grade) {
-        this.id = id;
-        this.name = name;
-        this.favourite = favourite;
-        this.grade = grade;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Student student = (Student) o;
-        return id.equals(student.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

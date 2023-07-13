@@ -1,10 +1,12 @@
 package com.example.spring.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.*;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -13,10 +15,14 @@ import java.util.Set;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
+@EqualsAndHashCode(of = {"id"})
 @Table(name = "course")
 public class Course {
     @Id
+    @NonNull
     private Long id;
+    @NonNull
     private String name;
 
     @OneToMany(mappedBy = "course")
@@ -24,22 +30,4 @@ public class Course {
 
     @OneToMany(mappedBy = "favourite")
     private Set<Student> students = new HashSet<>();
-
-    public Course(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Course course = (Course) o;
-        return id.equals(course.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

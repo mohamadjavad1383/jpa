@@ -17,7 +17,7 @@ public class Controller {
         this.service = service;
     }
 
-    @PostMapping("/new~student")
+    @PostMapping("/new-student")
     public void addNewStudent(@RequestParam Long id,
                               @RequestParam String name,
                               @RequestParam Long courseId,
@@ -25,13 +25,13 @@ public class Controller {
         service.addNewStudent(id, name, courseId, grade);
     }
 
-    @PostMapping("/new~teacher")
+    @PostMapping("/new-teacher")
     public void addNewTeacher(@RequestParam Long id,
                               @RequestParam String name) {
         service.addNewTeacher(id, name);
     }
 
-    @PostMapping("/new~course")
+    @PostMapping("/new-course")
     public void addNewCourse(@RequestParam Long id,
                              @RequestParam String name) {
         service.addNewCourse(id, name);
@@ -48,12 +48,12 @@ public class Controller {
         service.registerStudent(studentId, teacherId, courseId);
     }
 
-    @DeleteMapping("/delete~course")
+    @DeleteMapping("/delete-course")
     public void deleteCourse(@RequestParam Long studentId, @RequestParam Long courseId, @RequestParam Long teacherId) {
         service.deleteCourse(studentId, courseId, teacherId);
     }
 
-    @PutMapping("/change~favourite")
+    @PutMapping("/change-favourite")
     public void changeFavourite(@RequestParam Long studentId, @RequestParam Long courseId) {
         service.changeFavourite(studentId, courseId);
     }
@@ -64,17 +64,17 @@ public class Controller {
         service.score(score, studentId, teacherId, courseId);
     }
 
-    @GetMapping("/view~average")
-    public Float viewAverage(@RequestParam Long courseId, @RequestParam Long teacherId) {
+    @GetMapping("/view-average")
+    public double viewAverage(@RequestParam Long courseId, @RequestParam Long teacherId) {
         return service.viewAverage(courseId, teacherId);
     }
 
-    @GetMapping("/view~gpa")
+    @GetMapping("/view-gpa")
     public List<String> viewGpa(@RequestParam Float grade) {
         return service.viewGpa(grade);
     }
 
-    @GetMapping("/view~count~for~favourite")
+    @GetMapping("/view-count-for-favourite")
     public Map<String, Integer> viewCountForFavourite() {
         return service.viewCountForFavourite();
     }

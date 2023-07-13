@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -13,7 +12,9 @@ import java.util.Set;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "teacher_course")
+@EqualsAndHashCode(of = {"teacher", "course"})
 public class TeacherCourse {
     @Id
     @SequenceGenerator(
@@ -25,30 +26,14 @@ public class TeacherCourse {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "course_id")
+    @NonNull
     private Course course;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")
+    @NonNull
     private Teacher teacher;
-
-    public TeacherCourse(Course course, Teacher teacher) {
-        this.course = course;
-        this.teacher = teacher;
-    }
 
     @OneToMany(mappedBy = "teacherCourse")
     Set<StudentCourse> students = new HashSet<>();
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TeacherCourse that = (TeacherCourse) o;
-        return course.equals(that.course) && teacher.equals(that.teacher);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(course, teacher);
-    }
 }
