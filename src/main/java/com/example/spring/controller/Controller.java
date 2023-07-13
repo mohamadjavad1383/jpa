@@ -1,6 +1,8 @@
 package com.example.spring.controller;
 
-import com.example.spring.service.Service;
+import com.example.spring.service.CourseService;
+import com.example.spring.service.StudentService;
+import com.example.spring.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,74 +10,78 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/")
 public class Controller {
-    private final Service service;
+    private final StudentService studentService;
+    private final TeacherService teacherService;
+    private final CourseService courseService;
 
     @Autowired
-    public Controller(Service service) {
-        this.service = service;
+    public Controller(StudentService studentService, TeacherService teacherService, CourseService courseService) {
+        this.studentService = studentService;
+        this.teacherService = teacherService;
+        this.courseService = courseService;
     }
 
-    @PostMapping("/new-student")
+    @PostMapping("new-student")
     public void addNewStudent(@RequestParam Long id,
                               @RequestParam String name,
                               @RequestParam Long courseId,
                               @RequestParam Float grade) {
-        service.addNewStudent(id, name, courseId, grade);
+        studentService.addNewStudent(id, name, courseId, grade);
     }
 
-    @PostMapping("/new-teacher")
+    @PostMapping("new-teacher")
     public void addNewTeacher(@RequestParam Long id,
                               @RequestParam String name) {
-        service.addNewTeacher(id, name);
+        teacherService.addNewTeacher(id, name);
     }
 
-    @PostMapping("/new-course")
+    @PostMapping("new-course")
     public void addNewCourse(@RequestParam Long id,
                              @RequestParam String name) {
-        service.addNewCourse(id, name);
+        courseService.addNewCourse(id, name);
     }
 
-    @PostMapping("/accept")
-    public void registerStudent(@RequestParam Long teacherId, @RequestParam Long courseId) {
-        service.acceptTeacher(teacherId, courseId);
+    @PostMapping("accept")
+    public void acceptTeacher(@RequestParam Long teacherId, @RequestParam Long courseId) {
+        courseService.acceptTeacher(teacherId, courseId);
     }
 
-    @PostMapping("/register")
+    @PostMapping("register")
     public void registerStudent(@RequestParam Long studentId, @RequestParam Long teacherId,
                                 @RequestParam Long courseId) {
-        service.registerStudent(studentId, teacherId, courseId);
+        courseService.registerStudent(studentId, teacherId, courseId);
     }
 
-    @DeleteMapping("/delete-course")
+    @DeleteMapping("delete-course")
     public void deleteCourse(@RequestParam Long studentId, @RequestParam Long courseId, @RequestParam Long teacherId) {
-        service.deleteCourse(studentId, courseId, teacherId);
+        courseService.deleteCourse(studentId, courseId, teacherId);
     }
 
-    @PutMapping("/change-favourite")
+    @PutMapping("change-favourite")
     public void changeFavourite(@RequestParam Long studentId, @RequestParam Long courseId) {
-        service.changeFavourite(studentId, courseId);
+        studentService.changeFavourite(studentId, courseId);
     }
 
-    @PutMapping("/score")
+    @PutMapping("score")
     public void score(@RequestParam Float score, @RequestParam Long studentId,
                       @RequestParam Long courseId, @RequestParam Long teacherId) {
-        service.score(score, studentId, teacherId, courseId);
+        teacherService.score(score, studentId, teacherId, courseId);
     }
 
-    @GetMapping("/view-average")
+    @GetMapping("view-average")
     public double viewAverage(@RequestParam Long courseId, @RequestParam Long teacherId) {
-        return service.viewAverage(courseId, teacherId);
+        return courseService.viewAverage(courseId, teacherId);
     }
 
-    @GetMapping("/view-gpa")
+    @GetMapping("view-gpa")
     public List<String> viewGpa(@RequestParam Float grade) {
-        return service.viewGpa(grade);
+        return studentService.viewGpa(grade);
     }
 
-    @GetMapping("/view-count-for-favourite")
+    @GetMapping("view-count-for-favourite")
     public Map<String, Integer> viewCountForFavourite() {
-        return service.viewCountForFavourite();
+        return courseService.viewCountForFavourite();
     }
 }
